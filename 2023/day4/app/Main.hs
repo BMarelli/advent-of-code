@@ -9,11 +9,11 @@ prepare :: String -> Input
 prepare = mapMaybe (match scratchCard) . lines
 
 solve1 :: Input -> Int
-solve1 = sum . map (series . S.size . myWinners)
+solve1 = sum . map (cardPoints . S.size . myWinners)
   where
-    series :: Int -> Int
-    series 0 = 0
-    series n = 2 ^ (n - 1)
+    cardPoints :: Int -> Int
+    cardPoints 0 = 0
+    cardPoints n = 2 ^ (n - 1)
 
 main :: IO ()
 main = readFile "test/input/test.txt" >>= print . solve1 . prepare
