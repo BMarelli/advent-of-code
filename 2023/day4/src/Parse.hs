@@ -1,17 +1,17 @@
 module Parse (
   scratchCard,
-  match
+  match,
 ) where
 
-import Text.Regex.Applicative (RE, psym, string, match)
-import Data.Char (isDigit)
-import Control.Applicative
-import qualified Data.Set as S
 import Common
+import Control.Applicative
+import Data.Char (isDigit)
+import qualified Data.Set as S
+import Text.Regex.Applicative (RE, match, psym, string)
 
 type Parser a = RE Char a
 
-sepBy :: Alternative f => f a -> f b -> f [a]
+sepBy :: (Alternative f) => f a -> f b -> f [a]
 p `sepBy` sep = (:) <$> p <*> many (sep *> p)
 
 number :: Parser Int
@@ -25,6 +25,6 @@ iD = string "Card" *> blanks *> number <* string ":" <* blanks
 
 scratchCard :: Parser Scratchcard
 scratchCard = Scratchcard <$> iD <*> winners <* string " | " <* blanks <*> numbers
-  where
-    winners = S.fromList <$> sepBy number blanks
-    numbers = sepBy number blanks
+ where
+  winners = S.fromList <$> sepBy number blanks
+  numbers = sepBy number blanks
