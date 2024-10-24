@@ -28,3 +28,9 @@ distances = string "Distance:" *> spaces *> sepBy (Mm <$> number) spaces <* blan
 
 races :: Parser Input
 races = zipWith R <$> times <*> distances
+
+race :: Parser Race
+race = R <$> time <*> distance
+ where
+  time = Ms . (read . (>>= show . getTime)) <$> times
+  distance = Mm . (read . (>>= show . getDistance)) <$> distances

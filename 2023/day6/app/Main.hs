@@ -1,12 +1,14 @@
 module Main where
 
 import Common (Input, Milimeters (..), Miliseconds (..), Race (..))
-import Control.Arrow ((&&&))
+import Control.Arrow ((&&&), (***))
 import Data.Maybe (fromMaybe)
-import Parse (match, races)
+import Parse (match, race, races)
 
-prepare :: String -> Input
-prepare = fromMaybe (error "wrong input!") . match races
+prepare :: String -> (Input, Race)
+prepare = match' races &&& match' race
+ where
+  match' p = fromMaybe (error "wrong input!") . match p
 
 calculateWays :: Race -> Int
 calculateWays (R (Ms t) (Mm d)) = t - (2 * ceiling record) + 1
@@ -18,8 +20,8 @@ calculateWays (R (Ms t) (Mm d)) = t - (2 * ceiling record) + 1
 solve1 :: Input -> Int
 solve1 = product . map calculateWays
 
-solve2 :: Input -> Int
-solve2 = length
+solve2 :: Race -> Int
+solve2 = calculateWays
 
 main :: IO ()
-main = readFile "test/input.txt" >>= print . (solve1 &&& solve2) . prepare
+main = readFile "test/input.txt" >>= print . (solve1 *** solve2) . prepare
