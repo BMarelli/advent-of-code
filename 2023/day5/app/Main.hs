@@ -8,10 +8,10 @@ import Data.Maybe (fromMaybe)
 import Parse (almanac, match)
 
 source2destination :: Int -> Transformation -> Int
-source2destination n = maybe n (go . snd) . IM.lookupLT n
-  where
-    go :: (Int -> Int) -> Int
-    go f = f n
+source2destination n = maybe n (apply . snd) . IM.lookupLT n
+ where
+  apply :: (Int -> Int) -> Int
+  apply f = f n
 
 prepare :: String -> Input
 prepare = fromMaybe (error "wrong input!") . match almanac

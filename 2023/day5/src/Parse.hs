@@ -2,7 +2,7 @@
 
 module Parse (
   match,
-  almanac
+  almanac,
 ) where
 
 import Common
